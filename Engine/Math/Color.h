@@ -4,10 +4,10 @@
 
 namespace ew {
 	struct Color {
-		float r, g, b;
+		float r, g, b, a;
 
-		Color() : r{ 0 }, g{ 0 }, b{ 0 } {};
-		Color(float r, float g, float b) : r{ r }, g{ g }, b{ b } {};
+		Color() : r{ 0 }, g{ 0 }, b{ 0 }, a{ 1 } {};
+		Color(float r, float g, float b, float a = 1.0f) : r{ r }, g{ g }, b{ b }, a{ a } {}
 
 		float& operator [] (size_t index) { return (&r)[index]; }
 		const float& operator [] (size_t index) const { return (&r)[index]; }
@@ -36,9 +36,9 @@ namespace ew {
 
 		friend std::istream& operator >> (std::istream& stream, Color& c);
 
-		COLORREF pack888() const;
+		SDL_Color pack888() const;
 
-		operator COLORREF() const { return pack888(); }
+		operator SDL_Color() const { return pack888(); }
 
 		static const Color red;
 		static const Color white;
@@ -47,11 +47,13 @@ namespace ew {
 
 	};
 
-	inline COLORREF Color::pack888() const {
-		BYTE _r = static_cast<BYTE>(r * 255.0f);
-		BYTE _g = static_cast<BYTE>(g * 255.0f);
-		BYTE _b = static_cast<BYTE>(b * 255.0f);
+	inline SDL_Color Color::pack888() const {
+		SDL_Color color;
+		color.r = static_cast<BYTE>(r * 255.0f);
+		color.g = static_cast<BYTE>(g * 255.0f);
+		color.b = static_cast<BYTE>(b * 255.0f);
+		color.a = static_cast<BYTE>(a * 255.0f);
 
-		return _r | (_g << 8) | (_b << 16);
+		return color;
 	}
 }

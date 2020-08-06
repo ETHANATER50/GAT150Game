@@ -1,11 +1,15 @@
-#include <iostream>
+#include "Graphics/Texture.h"
 #include <SDL.h>
+#include <SDL_image.h>
+#include <iostream>
+
 
 int main(int, char**) {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
 		return 1;
 	}
+	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
 
 	SDL_Window* window = SDL_CreateWindow("GAT150", 100, 100, 800, 600, SDL_WINDOW_SHOWN);
 	if (window == nullptr) {
@@ -24,13 +28,14 @@ int main(int, char**) {
 
 	int width = 128;
 	int height = 128;
-	SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STATIC, width, height);
+	SDL_Texture* texture2 = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STATIC, width, height);
 	Uint32* pixels = new Uint32[width * height];
 	memset(pixels, 255, width * height * sizeof(Uint32));
-	SDL_UpdateTexture(texture, NULL, pixels, width * sizeof(Uint32));
+	SDL_UpdateTexture(texture2, NULL, pixels, width * sizeof(Uint32));
 
-	SDL_Surface* surface = SDL_LoadBMP("sf2.bmp");
-	SDL_Texture* texturer = SDL_CreateTextureFromSurface(renderer, surface);
+	ew::Texture texture;
+	texture.create("sf2.png", renderer);
+	float angle{ 0 };
 
 	SDL_Event event;
 	bool quit = false;
@@ -51,25 +56,23 @@ int main(int, char**) {
 			Uint8 c3 = rand() % 256;
 			pixels[i] = (c1 << 24 | c2 << 16 | c3 << 8);
 		}
-		SDL_UpdateTexture(texture, NULL, pixels, width * sizeof(Uint32));
+		SDL_UpdateTexture(texture2, NULL, pixels, width * sizeof(Uint32));
 
 		SDL_Rect rect;
 		rect.x = 40;
 		rect.y = 40;
 		rect.w = width;
 		rect.h = height;
-		SDL_RenderCopy(renderer, texture, NULL, NULL);
+		SDL_RenderCopy(renderer, texture2, NULL, NULL);
 
-		SDL_Rect recterer;
-		recterer.x = 20;
-		recterer.y = 20;
-		SDL_QueryTexture(texturer, NULL, NULL, &recterer.w, &recterer.h);
-		SDL_RenderCopy(renderer, texturer, NULL, &recterer);
+		angle += 1;
+
+		texture.draw({ 500, 100 }, { 2, 2 }, angle);
 
 		SDL_RenderPresent(renderer);
 	}
 
-
+	IMG_Quit();
 	SDL_Quit();
 
 	return 0;

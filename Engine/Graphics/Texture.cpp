@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "Texture.h"
+#include "Renderer.h"
 
 namespace ew {
-	bool Texture::create(const std::string& name, SDL_Renderer* _renderer) {
-		renderer = _renderer;
+	bool Texture::create(const std::string& name, void* _renderer) {
+		renderer = static_cast<Renderer*>(_renderer)->renderer;
 		SDL_Surface* surface = IMG_Load(name.c_str());
 		if (surface == nullptr) {
 			std::cout << "Error: " << SDL_GetError() << std::endl;
@@ -19,7 +20,7 @@ namespace ew {
 	}
 
 	void Texture::destroy() {
-
+		SDL_DestroyTexture(texture);
 	}
 
 	void Texture::draw(const Vector2& position, const Vector2& scale, float angle) {

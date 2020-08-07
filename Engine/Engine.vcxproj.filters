@@ -21,6 +21,9 @@
     <Filter Include="Resources">
       <UniqueIdentifier>{d2ddbd32-1ae6-4ad6-853d-77e67ce5dd61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{e19342dc-c1ec-4001-ab04-d358ce66f82c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -68,6 +71,9 @@
     <ClInclude Include="Graphics\Renderer.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Input\InputSystem.h">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -90,6 +96,9 @@
     </ClCompile>
     <ClCompile Include="Graphics\Renderer.cpp">
       <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\InputSystem.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

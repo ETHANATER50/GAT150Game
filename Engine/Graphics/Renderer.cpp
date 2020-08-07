@@ -15,15 +15,14 @@ namespace ew {
 
 	void Renderer::update() {
 	}
-	bool Renderer::create(const std::string& name, int width, int height)
-	{
+	bool Renderer::create(const std::string& name, int width, int height) {
 		window = SDL_CreateWindow(name.c_str() , 100, 100, width, height, SDL_WINDOW_SHOWN);
 		if (window == nullptr) {
 			std::cout << "Error. " << SDL_GetError() << std::endl;
 			return false;
 		}
 
-		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 		if (renderer == nullptr) {
 			std::cout << "Error. " << SDL_GetError() << std::endl;

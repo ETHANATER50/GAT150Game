@@ -1,6 +1,8 @@
 #pragma once
 
+#include "SDL.h"
 #include <windows.h>
+#include <iostream>
 
 namespace ew {
 	struct Color {
@@ -35,6 +37,7 @@ namespace ew {
 		Color& operator /= (const Color& c) { r /= c.r, g /= c.g, b /= c.b; return *this; }
 
 		friend std::istream& operator >> (std::istream& stream, Color& c);
+		friend std::ostream& operator << (std::ostream& stream, Color& c) { stream << c.r << " " << c.g << " " << c.b << " " << c.a; return stream; }
 
 		SDL_Color pack888() const;
 

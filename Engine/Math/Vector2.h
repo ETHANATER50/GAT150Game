@@ -36,8 +36,10 @@ namespace ew {
 		Vector2& operator *= (const Vector2& v) { x *= v.x, y *= v.y; return *this; }
 		Vector2& operator /= (const Vector2& v) { x /= v.x, y /= v.y; return *this; }
 
+
 		Vector2 operator - () { return Vector2{ -x, -y }; }
 
+		friend std::ostream& operator << (std::ostream& stream, Vector2& v) { stream << v.x << " " << v.y; return stream; }
 		friend std::istream& operator >> (std::istream& stream, Vector2& v);
 
 		float length() const;

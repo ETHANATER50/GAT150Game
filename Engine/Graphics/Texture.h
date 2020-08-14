@@ -12,7 +12,8 @@ namespace ew {
 		bool create(const std::string& name, void* _renderer) override;
 		void destroy() override;
 
-		void draw(const Vector2& position, const Vector2& scale, float angle);
+		void draw(const Vector2& position, const Vector2& scale = { 1, 1 }, float angle = 0);
+		void draw(const SDL_Rect& source, const Vector2& position, const Vector2& scale = { 1, 1 }, float angle = 0);
 
 		Vector2 getSize();
 		

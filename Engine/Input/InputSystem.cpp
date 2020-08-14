@@ -46,7 +46,7 @@ namespace ew {
 	}
 
 	bool InputSystem::getPreviousButton(int id) {
-		return keyState[id];
+		return prevKeyState[id];
 	}
 
 }

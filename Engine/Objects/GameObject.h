@@ -13,6 +13,8 @@ namespace ew {
 		virtual void create(void* data = nullptr) override;
 		virtual void destroy() override;
 
+		void read(const rapidjson::Value& value) override;
+
 		void update();
 		void draw();
 
@@ -26,6 +28,7 @@ namespace ew {
 	public:
 		Transform transform;
 		Engine* engine;
+		std::string name;
 
 	protected:
 		std::vector<Component*> components;

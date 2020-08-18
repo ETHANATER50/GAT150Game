@@ -12,6 +12,13 @@ namespace ew {
 		removeAllComponents();
 	}
 
+	void GameObject::read(const rapidjson::Value& value) {
+		json::get(value, "name", name);
+		json::get(value, "position", transform.position);
+		json::get(value, "scale", transform.scale);
+		json::get(value, "angle", transform.angle);
+	}
+
 	void GameObject::update() {
 		for (auto c : components) {
 			c->update();
@@ -26,7 +33,6 @@ namespace ew {
 	}
 
 	void GameObject::addComponent(Component* c) {
-		c->owner = this;
 		components.push_back(c);
 
 	}

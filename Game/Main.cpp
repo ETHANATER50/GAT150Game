@@ -1,9 +1,8 @@
 #include "pch.h"
 #include "Graphics/Texture.h"
 #include "Objects/GameObject.h"
-#include "Components/PhysicsComponent.h"
-#include "Components/SpriteComponent.h"
 #include "Components/PlayerComponent.h"
+#include "Objects/ObjectFactory.h"
 #include "Core/Json.h"
 
 
@@ -44,20 +43,31 @@ int main(int, char**) {
 
 	engine.startup();
 
-	player.create(&engine);
-	player.transform.position = { 400, 300 };
+
+	ew::ObjectFactory::instance().initialize();
+	ew::ObjectFactory::instance().Register("PlayerComponent", ew::Object::instantiate < ew::PlayerComponent>);
+
+	ew::GameObject* player = ew::ObjectFactory::instance().Create<ew::GameObject>("GameObject");
+
+
+	player->create(&engine);
+	ew::json::load("player.txt", document);
+	player->read(document);
+
 	ew::Component* component;
-	component = new ew::PhysicsComponent;
-	player.addComponent(component);
-	component->create();
+	component = ew::ObjectFactory::instance().Create<ew::Component>("PhysicsComponent");
+	component->create(player);
+	player->addComponent(component);
 
-	component = new ew::SpriteComponent;
-	player.addComponent(component);
-	component->create();
+	component = ew::ObjectFactory::instance().Create<ew::Component>("SpriteComponent");
+	component->create(player);
+	ew::json::load("sprite.txt", document);
+	component->read(document);
+	player->addComponent(component);
 
-	component = new ew::PlayerComponent;
-	player.addComponent(component);
-	component->create();
+	component = ew::ObjectFactory::instance().Create<ew::Component>("PlayerComponent");
+	component->create(player);
+	player->addComponent(component);
 
 	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
 
@@ -76,7 +86,7 @@ int main(int, char**) {
 		}
 
 		engine.update();
-		player.update();
+		player->update();
 
 		if (engine.getSystem<ew::InputSystem>()->getButtonState(SDL_SCANCODE_ESCAPE) == ew::InputSystem::ButtonState::PRESSED) {
 			quit = true;
@@ -87,7 +97,7 @@ int main(int, char**) {
 
 
 		background->draw({ 0, 0 });
-		player.draw();
+		player->draw();
 
 		engine.getSystem<ew::Renderer>()->endFrame();
 	}

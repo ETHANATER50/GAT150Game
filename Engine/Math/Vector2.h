@@ -56,6 +56,8 @@ namespace ew {
 		static const Vector2 up;
 		static const Vector2 down;
 		static const Vector2 forward;
+		static const Vector2 one;
+		static const Vector2 zero;
 	};
 
 	inline float Vector2::length() const {

@@ -5,7 +5,7 @@
 
 namespace ew {
 	void PlayerComponent::create(void* data) {
-
+		owner = static_cast<GameObject*>(data);
 	}
 
 	void PlayerComponent::destroy() {

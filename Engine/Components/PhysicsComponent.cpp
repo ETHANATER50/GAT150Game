@@ -4,6 +4,7 @@
 
 namespace ew {
 	void PhysicsComponent::create(void* data) {
+		owner = static_cast<GameObject*>(data);
 		drag = 0.95f;
 	}
 

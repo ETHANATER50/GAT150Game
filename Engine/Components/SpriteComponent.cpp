@@ -14,6 +14,7 @@ namespace ew {
 
 	void SpriteComponent::read(const rapidjson::Value& value) {
 		json::get(value, "texture", textureName);
+		json::get(value, "origin", origin);
 		json::get(value, "rect", rect);
 		
 	}
@@ -25,7 +26,7 @@ namespace ew {
 	void SpriteComponent::draw() {
 		//{ 125, 440, 60, 110 }
 		Texture* texture = owner->engine->getSystem<ew::ResourceManager>()->get<ew::Texture>(textureName, owner->engine->getSystem<ew::Renderer>());
-		texture->draw(rect, owner->transform.position, ew::Vector2::one * owner->transform.scale, owner->transform.angle);
+		texture->draw(rect, owner->transform.position, owner->transform.angle, ew::Vector2::one * owner->transform.scale, origin);
 	}
 
 }

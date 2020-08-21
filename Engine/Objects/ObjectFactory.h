@@ -6,7 +6,6 @@
 namespace ew {
 	class ObjectFactoryImpl : public Factory<Object, std::string> {
 	public:
-	public:
 		void initialize();
 	};
 

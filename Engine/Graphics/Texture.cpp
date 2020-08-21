@@ -23,24 +23,26 @@ namespace ew {
 		SDL_DestroyTexture(texture);
 	}
 
-	void Texture::draw(const Vector2& position, const Vector2& scale, float angle) {
+	void Texture::draw(const Vector2& position, float angle, const Vector2& scale, const Vector2& origin) {
 		Vector2 size = getSize();
 		size *= scale;
+		Vector2 newPos = position - size * origin;
 
 		SDL_Rect rect;
-		rect.x = static_cast<int>(position.x);
-		rect.y = static_cast<int>(position.y);
+		rect.x = static_cast<int>(newPos.x);
+		rect.y = static_cast<int>(newPos.y);
 		rect.w = static_cast<int>(size.x);
 		rect.h = static_cast<int>(size.y);
 		SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
 	}
-	void Texture::draw(const SDL_Rect& source, const Vector2& position, const Vector2& scale, float angle) {
+	void Texture::draw(const SDL_Rect& source, const Vector2& position, float angle, const Vector2& scale, const Vector2& origin) {
 		Vector2 size = { source.w, source.h };
 		size *= scale;
+		Vector2 newPos = position - size * origin;
 
 		SDL_Rect rect;
-		rect.x = static_cast<int>(position.x);
-		rect.y = static_cast<int>(position.y);
+		rect.x = static_cast<int>(newPos.x);
+		rect.y = static_cast<int>(newPos.y);
 		rect.w = static_cast<int>(size.x);
 		rect.h = static_cast<int>(size.y);
 		SDL_RenderCopyEx(renderer, texture, &source, &rect, angle, NULL, SDL_FLIP_NONE);

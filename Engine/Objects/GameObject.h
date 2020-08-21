@@ -14,6 +14,7 @@ namespace ew {
 		virtual void destroy() override;
 
 		void read(const rapidjson::Value& value) override;
+		void ReadComponents(const rapidjson::Value& value);
 
 		void update();
 		void draw();

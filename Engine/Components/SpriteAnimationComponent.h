@@ -1,25 +1,24 @@
 #pragma once
 
-#include "RenderComponent.h"
-
-
+#include "SpriteComponent.h"
 namespace ew {
-	class SpriteComponent : public RenderComponent {
+	class SpriteAnimationComponent : public SpriteComponent {
 	public:
-
 		virtual void create(void* data = nullptr) override;
 		virtual void destroy() override;
 
 		void read(const rapidjson::Value& value) override;
 
 		virtual void update() override;
-		virtual void draw() override;
-
 
 	protected:
-		SDL_Rect rect;
-		std::string textureName;
-		Vector2 origin;
+		int frame{ 0 };
+		float frameTimer{ 0 };
+		float frameRate{ 0 };
 
+		int numX{ 0 };
+		int numY{ 0 };
+		int frames{ 0 };
+		int fps{ 1 };
 	};
 }

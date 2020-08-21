@@ -3,54 +3,29 @@
 #include "Objects/GameObject.h"
 #include "Components/PlayerComponent.h"
 #include "Objects/ObjectFactory.h"
+#include "Objects/Scene.h"
 #include "Core/Json.h"
 
 
 ew::Engine engine;
 ew::GameObject player;
+ew::Scene scene;
 
 int main(int, char**) {
-
-
-	rapidjson::Document document; 
-	ew::json::load("json.txt", document); 
-
-	std::string str; 
-	ew::json::get(document, "string", str); 
-	std::cout << str << std::endl; 
 	
-	bool b; ew::json::get(document, "bool", b); 
-	std::cout << b << std::endl; 
-	
-	int i1; 
-	ew::json::get(document, "integer1", i1); 
-	std::cout << i1 << std::endl; 
-	
-	int i2; 
-	ew::json::get(document, "integer2", i2); 
-	std::cout << i2 << std::endl; 
-	
-	float f; 
-	ew::json::get(document, "float", f); 
-	std::cout << f << std::endl; 
-	
-	ew::Vector2 v2; 
-	ew::json::get(document, "vector2", v2); 
-	std::cout << v2 << std::endl; 
-	ew::Color color; 
-	ew::json::get(document, "color", color); 
-	std::cout << color << std::endl;
-
 	engine.startup();
-
+	scene.create(&engine);
 
 	ew::ObjectFactory::instance().initialize();
 	ew::ObjectFactory::instance().Register("PlayerComponent", ew::Object::instantiate < ew::PlayerComponent>);
 
 	ew::GameObject* player = ew::ObjectFactory::instance().Create<ew::GameObject>("GameObject");
 
+	rapidjson::Document document; 
+	ew::json::load("scene.txt", document);
+	scene.read(document);
 
-	player->create(&engine);
+	/*player->create(&engine);
 	ew::json::load("player.txt", document);
 	player->read(document);
 
@@ -67,11 +42,11 @@ int main(int, char**) {
 
 	component = ew::ObjectFactory::instance().Create<ew::Component>("PlayerComponent");
 	component->create(player);
-	player->addComponent(component);
+	player->addComponent(component);*/
 
 	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
 
-	ew::Texture* background = engine.getSystem<ew::ResourceManager>()->get<ew::Texture>("background.png", engine.getSystem<ew::Renderer>());
+	//ew::Texture* background = engine.getSystem<ew::ResourceManager>()->get<ew::Texture>("background.png", engine.getSystem<ew::Renderer>());
 	
 	ew::Vector2 velocity{ 0,0 };
 
@@ -86,7 +61,8 @@ int main(int, char**) {
 		}
 
 		engine.update();
-		player->update();
+		scene.update();
+	//	player->update();
 
 		if (engine.getSystem<ew::InputSystem>()->getButtonState(SDL_SCANCODE_ESCAPE) == ew::InputSystem::ButtonState::PRESSED) {
 			quit = true;
@@ -96,12 +72,14 @@ int main(int, char**) {
 		engine.getSystem<ew::Renderer>()->beginFrame();
 
 
-		background->draw({ 0, 0 });
-		player->draw();
+		//background->draw({ 0, 0 });
+		scene.draw();
+		//player->draw();
 
 		engine.getSystem<ew::Renderer>()->endFrame();
 	}
 
+	scene.destroy();
 	engine.shutdown();
 	IMG_Quit();
 	SDL_Quit();

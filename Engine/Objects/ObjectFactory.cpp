@@ -3,14 +3,16 @@
 #include "Components/PhysicsComponent.h"
 #include "Components/SpriteComponent.h"
 #include "Components/SpriteAnimationComponent.h"
+#include "Components/RigidBodyComponent.h"
 
 
 namespace ew {
 	void ew::ObjectFactoryImpl::initialize() {
-		ew::ObjectFactory::instance().Register("GameObject", ew::Object::instantiate<ew::GameObject>);
-		ew::ObjectFactory::instance().Register("PhysicsComponent", ew::Object::instantiate < ew::PhysicsComponent>);
-		ew::ObjectFactory::instance().Register("SpriteComponent", ew::Object::instantiate < ew::SpriteComponent>);
-		ew::ObjectFactory::instance().Register("SpriteAnimationComponent", ew::Object::instantiate < ew::SpriteAnimationComponent>);
+		ew::ObjectFactory::instance().Register("GameObject", new Creator<GameObject, Object>);
+		ew::ObjectFactory::instance().Register("PhysicsComponent", new Creator<PhysicsComponent, Object>);
+		ew::ObjectFactory::instance().Register("SpriteComponent", new Creator<SpriteComponent, Object>);
+		ew::ObjectFactory::instance().Register("SpriteAnimationComponent", new Creator<SpriteAnimationComponent, Object>);
+		ew::ObjectFactory::instance().Register("RigidBodyComponent", new Creator<RigidBodyComponent, Object>);
 	}
 
 }

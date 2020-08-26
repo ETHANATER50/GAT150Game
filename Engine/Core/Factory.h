@@ -3,17 +3,41 @@
 #include <functional>
 
 namespace ew {
+	template<typename Base>
+	class CreatorBase {
+	public:
+		virtual Base* create()const = 0;
+	};
+
+	template<typename T, typename Base>
+	class Creator : public CreatorBase<Base> {
+	public:
+		Base* create() const override {
+			return new T;
+		}
+	};
+
+	template<typename Base>
+	class Prototype : public CreatorBase<Base> {
+	public:
+		Prototype(Base* _instance) : instance{ _instance } {}
+		Base* create() const override {
+			return instance->clone();
+		}
+
+	private:
+		Base* instance;
+	};
+
 	template<typename Base, typename Key>
 	class Factory {
 	public:
-		using function_t = std::function<Base* ()>;
-
 		template<typename T = Base>
 		T* Create(Key key);
-		void Register(Key key, function_t function);
+		void Register(Key key, CreatorBase<Base>* creator);
 
 	protected:
-		std::map<Key, function_t> registry;
+		std::map<Key, CreatorBase<Base>*> registry;
 	};
 
 
@@ -24,12 +48,13 @@ namespace ew {
 
 		auto iter = registry.find(key);
 		if (iter  != registry.end()) {
-			object = dynamic_cast<T*>(iter->second());
+			CreatorBase<Base>* creator = iter->second;
+			object = dynamic_cast<T*>(creator->create());
 		}
 		return object;
 	}
 	template<typename Base, typename Key>
-	inline void Factory<Base, Key>::Register(Key key, function_t function) {
-		registry[key] = function;
+	inline void Factory<Base, Key>::Register(Key key, CreatorBase<Base>* creator) {
+		registry[key] = creator;
 	}
 }

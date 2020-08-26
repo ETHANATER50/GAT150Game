@@ -2,16 +2,28 @@
 #include "Object.h"
 #include "Math/Transform.h"
 #include "Engine.h"
+#include <bitset>
 
 namespace ew {
 	class Component;
 
 	class GameObject : public Object {
 	public:
+		enum  eFlags {
+			ACTIVE,
+			VISIBLE,
+			DESTROY,
+			TRANSIENT
+		};
 
+	public:
+
+		GameObject() = default;
+		GameObject(const GameObject& other);
 
 		virtual void create(void* data = nullptr) override;
 		virtual void destroy() override;
+		virtual Object* clone() const override { return new GameObject{ *this }; }
 
 		void read(const rapidjson::Value& value) override;
 		void ReadComponents(const rapidjson::Value& value);
@@ -28,8 +40,13 @@ namespace ew {
 
 	public:
 		Transform transform;
-		Engine* engine;
+		Engine* engine{ nullptr };
+
 		std::string name;
+		std::string tag;
+		std::bitset<32> flags;
+
+		float lifetime{ 0 };
 
 	protected:
 		std::vector<Component*> components;

@@ -17,7 +17,7 @@ int main(int, char**) {
 	scene.create(&engine);
 
 	ew::ObjectFactory::instance().initialize();
-	ew::ObjectFactory::instance().Register("PlayerComponent", ew::Object::instantiate < ew::PlayerComponent>);
+	ew::ObjectFactory::instance().Register("PlayerComponent", new ew::Creator<ew::PlayerComponent, ew::Object>);
 
 	ew::GameObject* player = ew::ObjectFactory::instance().Create<ew::GameObject>("GameObject");
 
@@ -25,29 +25,16 @@ int main(int, char**) {
 	ew::json::load("scene.txt", document);
 	scene.read(document);
 
-	/*player->create(&engine);
-	ew::json::load("player.txt", document);
-	player->read(document);
+	//for (size_t i = 0; i < 10; i++) {
+	//	ew::GameObject* gameObject = ew::ObjectFactory::instance().Create<ew::GameObject>("ProtoExplosion");
+	//	gameObject->transform.position = { ew::random(0, 800), ew::random(0, 600) };
+	//	gameObject->transform.angle = ew::random(0, 360);
 
-	ew::Component* component;
-	component = ew::ObjectFactory::instance().Create<ew::Component>("PhysicsComponent");
-	component->create(player);
-	player->addComponent(component);
-
-	component = ew::ObjectFactory::instance().Create<ew::Component>("SpriteComponent");
-	component->create(player);
-	ew::json::load("sprite.txt", document);
-	component->read(document);
-	player->addComponent(component);
-
-	component = ew::ObjectFactory::instance().Create<ew::Component>("PlayerComponent");
-	component->create(player);
-	player->addComponent(component);*/
+	//	scene.addGameObject(gameObject);
+	//}
 
 	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
 
-	//ew::Texture* background = engine.getSystem<ew::ResourceManager>()->get<ew::Texture>("background.png", engine.getSystem<ew::Renderer>());
-	
 	ew::Vector2 velocity{ 0,0 };
 
 	SDL_Event event;
@@ -62,19 +49,15 @@ int main(int, char**) {
 
 		engine.update();
 		scene.update();
-	//	player->update();
 
 		if (engine.getSystem<ew::InputSystem>()->getButtonState(SDL_SCANCODE_ESCAPE) == ew::InputSystem::ButtonState::PRESSED) {
 			quit = true;
 		}
 
-		//SDL_SetRenderDrawColor(renderer, 20, 0, 30, 255);
 		engine.getSystem<ew::Renderer>()->beginFrame();
 
-
-		//background->draw({ 0, 0 });
 		scene.draw();
-		//player->draw();
+
 
 		engine.getSystem<ew::Renderer>()->endFrame();
 	}

@@ -13,12 +13,14 @@ namespace ew {
 
 		void read(const rapidjson::Value& value) override;
 		void readGameObjects(const rapidjson::Value& value);
+		void readPrototypes(const rapidjson::Value& value);
 
 
 		void update() override;
 		void draw();
 
 		GameObject* find(const std::string& name);
+		std::vector<GameObject*> findGameObjectsWithTag(const std::string& tag);
 
 		void addGameObject(GameObject* gameObject);
 		void removeGameObject(GameObject* gameObject);

@@ -7,6 +7,7 @@ namespace ew {
 
 		virtual void create(void* data = nullptr) = 0;
 		virtual void destroy() = 0;
+		virtual Object* clone() const { return nullptr; }
 
 		virtual void read(const rapidjson::Value& value) {}
 

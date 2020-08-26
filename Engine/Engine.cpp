@@ -5,6 +5,7 @@ namespace ew {
 	bool Engine::startup() {
 		systems.push_back(new Renderer);
 		systems.push_back(new ResourceManager);
+		systems.push_back(new PhysicsSystem);
 		systems.push_back(new InputSystem);
 
 		for (auto system : systems) {

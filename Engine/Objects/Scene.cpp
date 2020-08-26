@@ -14,10 +14,17 @@ namespace ew {
 	}
 
 	void ew::Scene::read(const rapidjson::Value& value) {
-
-		const rapidjson::Value& objectsValue = value["GameObjects"];
-		if (objectsValue.IsArray()) {
-			readGameObjects(objectsValue);
+		if (value.HasMember("Prototypes")) {
+			const rapidjson::Value& objectsValue = value["Prototypes"];
+			if (objectsValue.IsArray()) {
+				readPrototypes(objectsValue);
+			}
+		}
+		if (value.HasMember("GameObjects")) {
+			const rapidjson::Value& objectsValue = value["GameObjects"];
+			if (objectsValue.IsArray()) {
+				readGameObjects(objectsValue);
+			}
 		}
 
 	}
@@ -38,10 +45,39 @@ namespace ew {
 		}
 	}
 
+	void Scene::readPrototypes(const rapidjson::Value& value) {
+		for (rapidjson::SizeType i = 0; i < value.Size(); i++) {
+			const rapidjson::Value& objectValue = value[i];
+			if (objectValue.IsObject()) {
+				std::string typeName;
+				json::get(objectValue, "type", typeName);
+				ew::GameObject* gameObject = ObjectFactory::instance().Create<GameObject>(typeName);
+
+				if (gameObject) {
+					gameObject->create(engine);
+					gameObject->read(objectValue);
+
+					ObjectFactory::instance().Register(gameObject->name, new Prototype<Object>(gameObject));
+				}
+			}
+		}
+	}
 
 	void ew::Scene::update() {
 		for (auto gameObject : gameObjects) {
 			gameObject->update();
+		}
+
+		auto iter = gameObjects.begin();
+		while (iter != gameObjects.end()) {
+			if ((*iter)->flags[GameObject::eFlags::DESTROY]) {
+				(*iter)->destroy();
+				delete (*iter);
+				iter = gameObjects.erase(iter);
+			}
+			else {
+				iter++;
+			}
 		}
 	}
 
@@ -58,6 +94,18 @@ namespace ew {
 			}
 		}
 		return nullptr;
+	}
+
+	std::vector<GameObject*> Scene::findGameObjectsWithTag(const std::string& tag) {
+		std::vector<GameObject*> gameObjects;
+
+		for (auto gameObject : gameObjects) {
+			if (gameObject->tag == tag) {
+				gameObjects.push_back(gameObject);
+			}
+		}
+
+		return gameObjects;
 	}
 
 	void ew::Scene::addGameObject(GameObject* gameObject) {

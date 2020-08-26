@@ -5,6 +5,22 @@
 #include "ObjectFactory.h"
 
 namespace ew {
+	GameObject::GameObject(const GameObject& other) {
+		name = other.name;
+		tag = other.tag;
+		flags = other.flags;
+		lifetime = other.lifetime;
+		transform = other.transform;
+		engine = other.engine;
+
+		for (auto component : other.components) {
+			Component* clone = static_cast<Component*>(component->clone());
+			clone->owner = this;
+			addComponent(clone);
+		}
+
+	}
+
 	void GameObject::create(void* data) {
 		engine = static_cast<Engine*>(data);
 	}
@@ -15,13 +31,23 @@ namespace ew {
 
 	void GameObject::read(const rapidjson::Value& value) {
 		json::get(value, "name", name);
+		json::get(value, "tag", tag);
+
+		bool transient = flags[eFlags::TRANSIENT];
+		json::get(value, "transient", transient);
+		flags[eFlags::TRANSIENT] = transient;
+
 		json::get(value, "position", transform.position);
 		json::get(value, "scale", transform.scale);
 		json::get(value, "angle", transform.angle);
 
-		const rapidjson::Value& componentsValue = value["Components"];
-		if (componentsValue.IsArray()) {
-			ReadComponents(componentsValue);
+		json::get(value, "lifetime", lifetime);
+
+		if (value.HasMember("Components")) {
+			const rapidjson::Value& componentsValue = value["Components"];
+			if (componentsValue.IsArray()) {
+				ReadComponents(componentsValue);
+			}
 		}
 	}
 
@@ -45,6 +71,13 @@ namespace ew {
 	void GameObject::update() {
 		for (auto c : components) {
 			c->update();
+		}
+
+		if (flags[eFlags::TRANSIENT]) {
+			lifetime -= engine->getTimer().deltaTime();
+			if (lifetime <= 0) {
+				flags[eFlags::DESTROY] = true;
+			}
 		}
 	}
 

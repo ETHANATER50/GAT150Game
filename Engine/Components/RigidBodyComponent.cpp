@@ -21,11 +21,11 @@ namespace ew {
 
 	void RigidBodyComponent::update() {
 		if (!body) {
-			body = owner->engine->getSystem<PhysicsSystem>()->createBody(owner->transform.position, data, owner);
+			body = owner->engine->getSystem<PhysicsSystem>()->createBody(owner->transform.position, owner->transform.angle, data, owner);
 		}
 
 		owner->transform.position = body->GetPosition();
-		owner->transform.angle = body->GetAngle();
+		owner->transform.angle = ew::radiansToDregrees(body->GetAngle());
 	}
 
 	void RigidBodyComponent::setForce(const Vector2& _force) {

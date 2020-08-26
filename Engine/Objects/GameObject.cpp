@@ -88,6 +88,14 @@ namespace ew {
 		}
 	}
 
+	void GameObject::beginContact(GameObject* other) {
+		std::cout << "begin: " << other->name << std::endl;
+	}
+
+	void GameObject::endContact(GameObject* other) {
+		std::cout << "end: " << other->name << std::endl;
+	}
+
 	void GameObject::addComponent(Component* c) {
 		components.push_back(c);
 

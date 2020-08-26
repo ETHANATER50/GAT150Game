@@ -3,6 +3,8 @@
 
 namespace ew {
 	bool Engine::startup() {
+		srand(static_cast<unsigned int>(time(nullptr)));
+
 		systems.push_back(new Renderer);
 		systems.push_back(new ResourceManager);
 		systems.push_back(new PhysicsSystem);

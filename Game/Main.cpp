@@ -25,17 +25,15 @@ int main(int, char**) {
 	ew::json::load("scene.txt", document);
 	scene.read(document);
 
-	//for (size_t i = 0; i < 10; i++) {
-	//	ew::GameObject* gameObject = ew::ObjectFactory::instance().Create<ew::GameObject>("ProtoExplosion");
-	//	gameObject->transform.position = { ew::random(0, 800), ew::random(0, 600) };
-	//	gameObject->transform.angle = ew::random(0, 360);
+	for (size_t i = 0; i < 10; i++) {
+		ew::GameObject* gameObject = ew::ObjectFactory::instance().Create<ew::GameObject>("ProtoBox");
+		gameObject->transform.position = { ew::random(0, 800), ew::random(0, 300) };
+		gameObject->transform.angle = ew::random(0, 360);
 
-	//	scene.addGameObject(gameObject);
-	//}
+		scene.addGameObject(gameObject);
+	}
 
 	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
-
-	ew::Vector2 velocity{ 0,0 };
 
 	SDL_Event event;
 	bool quit = false;
@@ -57,7 +55,6 @@ int main(int, char**) {
 		engine.getSystem<ew::Renderer>()->beginFrame();
 
 		scene.draw();
-
 
 		engine.getSystem<ew::Renderer>()->endFrame();
 	}

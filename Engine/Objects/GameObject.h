@@ -31,6 +31,9 @@ namespace ew {
 		void update();
 		void draw();
 
+		void beginContact(GameObject* other);
+		void endContact(GameObject* other);
+
 		template<typename T>
 		T* getComponent();
 

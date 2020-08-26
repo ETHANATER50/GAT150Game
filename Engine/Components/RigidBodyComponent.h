@@ -7,7 +7,7 @@ namespace ew {
 
 		virtual void create(void* data = nullptr) override;
 		virtual void destroy() override;
-		virtual Object* clone() const override { return new PhysicsComponent{ *this }; }
+		virtual RigidBodyComponent* clone() const override { return new RigidBodyComponent{ *this }; }
 
 		void read(const rapidjson::Value& value) override;
 

@@ -22,7 +22,7 @@ namespace ew {
 		virtual void shutdown() override;
 
 		virtual b2Body* createBody(const Vector2& position, const Vector2& size, float density, bool isDynamic = true);
-		virtual b2Body* createBody(const Vector2& position, const RigidBodyData& data, GameObject* owner = nullptr);
+		virtual b2Body* createBody(const Vector2& position, float angle, const RigidBodyData& data, GameObject* owner = nullptr);
 
 		virtual void update() override;
 
@@ -30,5 +30,6 @@ namespace ew {
 
 	protected:
 		b2World* world{ nullptr };
+		class ContactListener* contactListener{ nullptr };
 	};
 }

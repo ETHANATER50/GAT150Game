@@ -1,16 +1,21 @@
 #include "pch.h"
 #include "PhysicsSystem.h"
+#include "ContactListener.h"
 
 namespace ew {
 	bool PhysicsSystem::startup() {
 		b2Vec2 gravity{ 0, 150 };
 		world = new b2World(gravity);
+		contactListener = new ContactListener;
+		world->SetContactListener(contactListener);
 		return true;
 	}
 
 	void PhysicsSystem::shutdown() {
 		delete world;
 		world = nullptr;
+		delete contactListener;
+		contactListener = nullptr;
 	}
 
 	b2Body* PhysicsSystem::createBody(const Vector2& position, const Vector2& size, float density, bool isDynamic) {
@@ -28,11 +33,12 @@ namespace ew {
 		return body;
 	}
 
-	b2Body* PhysicsSystem::createBody(const Vector2& position, const RigidBodyData& data, GameObject* owner) {
+	b2Body* PhysicsSystem::createBody(const Vector2& position, float angle, const RigidBodyData& data, GameObject* gameObject) {
 		b2BodyDef bodyDef;
 
 		bodyDef.type = (data.isDynamic) ? b2_dynamicBody : b2_staticBody;
 		bodyDef.position.Set(position.x, position.y);
+		bodyDef.angle = ew::degreesToRadians(angle);
 		bodyDef.fixedRotation = data.lockAngle;
 		b2Body* body = world->CreateBody(&bodyDef);
 
@@ -44,6 +50,7 @@ namespace ew {
 		fixtureDef.friction = data.friction;
 		fixtureDef.restitution = data.restitution;
 		fixtureDef.shape = &shape;
+		fixtureDef.userData = gameObject;
 		body->CreateFixture(&fixtureDef);
 
 		return body;

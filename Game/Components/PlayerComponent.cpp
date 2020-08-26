@@ -23,7 +23,7 @@ namespace ew {
 		}
 
 		if (owner->engine->getSystem<ew::InputSystem>()->getButtonState(SDL_SCANCODE_SPACE) == ew::InputSystem::ButtonState::PRESSED) {
-			force.y = -200000000000;
+			force.y = -200000;
 		}
 
 		PhysicsComponent* component = owner->getComponent<PhysicsComponent>();

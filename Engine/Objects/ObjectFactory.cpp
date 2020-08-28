@@ -4,6 +4,7 @@
 #include "Components/SpriteComponent.h"
 #include "Components/SpriteAnimationComponent.h"
 #include "Components/RigidBodyComponent.h"
+#include "Components/AudioComponent.h"
 
 
 namespace ew {
@@ -13,6 +14,7 @@ namespace ew {
 		ew::ObjectFactory::instance().Register("SpriteComponent", new Creator<SpriteComponent, Object>);
 		ew::ObjectFactory::instance().Register("SpriteAnimationComponent", new Creator<SpriteAnimationComponent, Object>);
 		ew::ObjectFactory::instance().Register("RigidBodyComponent", new Creator<RigidBodyComponent, Object>);
+		ew::ObjectFactory::instance().Register("AudioComponent", new Creator<AudioComponent, Object>);
 	}
 
 }

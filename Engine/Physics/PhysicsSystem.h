@@ -14,6 +14,7 @@ namespace ew {
 			float restitution{ 0.3f };
 			bool lockAngle{ false };
 			bool isDynamic{ false };
+			bool isSensor{ false };
 		};
 
 
@@ -21,12 +22,13 @@ namespace ew {
 		virtual bool startup() override;
 		virtual void shutdown() override;
 
-		virtual b2Body* createBody(const Vector2& position, const Vector2& size, float density, bool isDynamic = true);
-		virtual b2Body* createBody(const Vector2& position, float angle, const RigidBodyData& data, GameObject* owner = nullptr);
-
 		virtual void update() override;
 
+		virtual b2Body* createBody(const Vector2& position, float angle, const RigidBodyData& data, GameObject* owner = nullptr);
+		void destroyBody(b2Body* body);
 
+		static Vector2 worldToScreen(const Vector2& world) { return world * 32.0f; }
+		static Vector2 screenToWorld(const Vector2& screen) { return screen * 0.03125f; }
 
 	protected:
 		b2World* world{ nullptr };

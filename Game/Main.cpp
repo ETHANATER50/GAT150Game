@@ -26,8 +26,8 @@ int main(int, char**) {
 	scene.read(document);
 
 	for (size_t i = 0; i < 10; i++) {
-		ew::GameObject* gameObject = ew::ObjectFactory::instance().Create<ew::GameObject>("ProtoBox");
-		gameObject->transform.position = { ew::random(0, 800), ew::random(0, 300) };
+		ew::GameObject* gameObject = ew::ObjectFactory::instance().Create<ew::GameObject>("ProtoCoin");
+		gameObject->transform.position = { ew::random(0, 800), ew::random(350, 450) };
 		gameObject->transform.angle = ew::random(0, 360);
 
 		scene.addGameObject(gameObject);

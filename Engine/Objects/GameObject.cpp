@@ -89,11 +89,23 @@ namespace ew {
 	}
 
 	void GameObject::beginContact(GameObject* other) {
-		std::cout << "begin: " << other->name << std::endl;
+		contacts.push_back(other);
 	}
 
 	void GameObject::endContact(GameObject* other) {
-		std::cout << "end: " << other->name << std::endl;
+		contacts.remove(other);
+	}
+
+	std::vector<GameObject*> GameObject::getContactsWithTag(const std::string& tag) {
+		std::vector<GameObject*> _contacts;
+
+		for (auto contact : contacts) {
+			if (contact->tag == tag) {
+				_contacts.push_back(contact);
+			}
+		}
+		
+		return _contacts;
 	}
 
 	void GameObject::addComponent(Component* c) {

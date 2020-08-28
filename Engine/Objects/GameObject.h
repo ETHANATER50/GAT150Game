@@ -33,6 +33,7 @@ namespace ew {
 
 		void beginContact(GameObject* other);
 		void endContact(GameObject* other);
+		std::vector<GameObject*> getContactsWithTag(const std::string& tag);
 
 		template<typename T>
 		T* getComponent();
@@ -53,6 +54,7 @@ namespace ew {
 
 	protected:
 		std::vector<Component*> components;
+		std::list<GameObject*> contacts;
 
 	};
 

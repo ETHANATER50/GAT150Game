@@ -39,7 +39,7 @@ namespace ew {
 		Vector2 cellSize = textureSize / cellCount;
 
 		rect.x = static_cast<int>((frame % numX) * cellSize.x);
-		rect.y = static_cast<int>((frame / numY) * cellSize.y);
+		rect.y = static_cast<int>((frame / numX) * cellSize.y);
 		rect.w = static_cast<int>(cellSize.x);
 		rect.h = static_cast<int>(cellSize.y);
 	}

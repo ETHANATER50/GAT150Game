@@ -4,7 +4,7 @@
 
 namespace ew {
 	bool PhysicsSystem::startup() {
-		b2Vec2 gravity{ 0, 150 };
+		b2Vec2 gravity{ 0, 10 };
 		world = new b2World(gravity);
 		contactListener = new ContactListener;
 		world->SetContactListener(contactListener);
@@ -18,42 +18,35 @@ namespace ew {
 		contactListener = nullptr;
 	}
 
-	b2Body* PhysicsSystem::createBody(const Vector2& position, const Vector2& size, float density, bool isDynamic) {
-		b2BodyDef bodyDef;
-
-		bodyDef.type = (isDynamic) ? b2_dynamicBody : b2_staticBody;
-		bodyDef.position.Set(position.x, position.y);
-		b2Body* body = world->CreateBody(&bodyDef);
-
-		b2PolygonShape shape;
-		shape.SetAsBox(size.x, size.y);
-
-		body->CreateFixture(&shape, density);
-
-		return body;
-	}
-
 	b2Body* PhysicsSystem::createBody(const Vector2& position, float angle, const RigidBodyData& data, GameObject* gameObject) {
 		b2BodyDef bodyDef;
 
+		Vector2 worldPosition = screenToWorld(position);
+
 		bodyDef.type = (data.isDynamic) ? b2_dynamicBody : b2_staticBody;
-		bodyDef.position.Set(position.x, position.y);
+		bodyDef.position.Set(worldPosition.x, worldPosition.y);
 		bodyDef.angle = ew::degreesToRadians(angle);
 		bodyDef.fixedRotation = data.lockAngle;
 		b2Body* body = world->CreateBody(&bodyDef);
 
+		Vector2 worldSize = screenToWorld(data.size);
 		b2PolygonShape shape;
-		shape.SetAsBox(data.size.x, data.size.y);
+		shape.SetAsBox(worldSize.x, worldSize.y);
 
 		b2FixtureDef fixtureDef;
 		fixtureDef.density = data.density;
 		fixtureDef.friction = data.friction;
 		fixtureDef.restitution = data.restitution;
+		fixtureDef.isSensor = data.isSensor;
 		fixtureDef.shape = &shape;
 		fixtureDef.userData = gameObject;
 		body->CreateFixture(&fixtureDef);
 
 		return body;
+	}
+
+	void PhysicsSystem::destroyBody(b2Body* body) {
+		world->DestroyBody(body);
 	}
 
 	void PhysicsSystem::update() {

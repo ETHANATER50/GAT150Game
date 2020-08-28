@@ -6,6 +6,7 @@
 #include "Input/InputSystem.h"
 #include "Core/Timer.h"
 #include "Physics/PhysicsSystem.h"
+#include "Audio/AudioSystem.h"
 
 
 namespace ew {

@@ -7,11 +7,12 @@ namespace ew {
 	}
 
 	void RigidBodyComponent::destroy() {
-
+		owner->engine->getSystem<PhysicsSystem>()->destroyBody(body);
 	}
 
 	void RigidBodyComponent::read(const rapidjson::Value& value) {
 		json::get(value, "isDynamic", data.isDynamic);
+		json::get(value, "isSensor", data.isSensor);
 		json::get(value, "lockAngle", data.lockAngle);
 		json::get(value, "size", data.size);
 		json::get(value, "density", data.density);
@@ -24,12 +25,14 @@ namespace ew {
 			body = owner->engine->getSystem<PhysicsSystem>()->createBody(owner->transform.position, owner->transform.angle, data, owner);
 		}
 
-		owner->transform.position = body->GetPosition();
+		owner->transform.position = PhysicsSystem::worldToScreen(body->GetPosition());
 		owner->transform.angle = ew::radiansToDregrees(body->GetAngle());
 	}
 
 	void RigidBodyComponent::setForce(const Vector2& _force) {
-		body->ApplyLinearImpulseToCenter(_force, true);
+		body->ApplyForceToCenter(_force, true);
+		//body->SetGravityScale(2.0f); increases gravity
+		//body->SetLinearDamping(15.0f); slows movement
 	}
 
 

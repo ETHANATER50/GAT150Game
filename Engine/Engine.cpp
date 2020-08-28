@@ -9,6 +9,7 @@ namespace ew {
 		systems.push_back(new ResourceManager);
 		systems.push_back(new PhysicsSystem);
 		systems.push_back(new InputSystem);
+		systems.push_back(new AudioSystem);
 
 		for (auto system : systems) {
 			system->startup();

@@ -26,7 +26,7 @@ namespace ew {
 		}
 
 		if (onGround && owner->engine->getSystem<ew::InputSystem>()->getButtonState(SDL_SCANCODE_SPACE) == ew::InputSystem::ButtonState::PRESSED) {
-			force.y = -700;
+			force.y = -2000;
 			AudioComponent* audioComponent = owner->getComponent<AudioComponent>(); 
 			if (audioComponent) { 
 				audioComponent->play(); 

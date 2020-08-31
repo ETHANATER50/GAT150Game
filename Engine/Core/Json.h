@@ -1,6 +1,7 @@
 #pragma once
 #include "document.h"
 #include <string>
+#include <vector>
 
 namespace ew {
 	namespace json {
@@ -12,5 +13,8 @@ namespace ew {
 		bool get(const rapidjson::Value& value, const std::string& name, Vector2& data);
 		bool get(const rapidjson::Value& value, const std::string& name, Color& data);
 		bool get(const rapidjson::Value& value, const std::string& name, SDL_Rect& data);
+
+		bool get(const rapidjson::Value& value, const std::string& name, std::vector<std::string>& data);
+		bool get(const rapidjson::Value& value, const std::string& name, std::vector<int>& data);
 	}
 }

@@ -27,6 +27,10 @@ namespace ew {
 
 		owner->transform.position = PhysicsSystem::worldToScreen(body->GetPosition());
 		owner->transform.angle = ew::radiansToDregrees(body->GetAngle());
+
+		velocity = body->GetLinearVelocity();
+		velocity.x = ew::clamp(velocity.x, -5.0f, 5.0f);
+		body->SetLinearVelocity(velocity);
 	}
 
 	void RigidBodyComponent::setForce(const Vector2& _force) {

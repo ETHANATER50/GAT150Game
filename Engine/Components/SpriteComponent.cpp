@@ -5,7 +5,6 @@
 namespace ew {
 	void SpriteComponent::create(void* data) {
 		owner = static_cast<GameObject*>(data);
-		//ASSERT_MSG(texture != nullptr, "Error texture " + textureName + " not loaded");
 	}
 
 	void SpriteComponent::destroy() {
@@ -24,9 +23,8 @@ namespace ew {
 	}
 
 	void SpriteComponent::draw() {
-		//{ 125, 440, 60, 110 }
 		Texture* texture = owner->engine->getSystem<ew::ResourceManager>()->get<ew::Texture>(textureName, owner->engine->getSystem<ew::Renderer>());
-		texture->draw(rect, owner->transform.position, owner->transform.angle, ew::Vector2::one * owner->transform.scale, origin);
+		texture->draw(rect, owner->transform.position, owner->transform.angle, ew::Vector2::one * owner->transform.scale, origin, fliped);
 	}
 
 }

@@ -18,11 +18,14 @@ namespace ew {
 		json::get(value, "density", data.density);
 		json::get(value, "friction", data.friction);
 		json::get(value, "restitution", data.restitution);
+		json::get(value, "gravityScale", data.gravityScale);
 	}
 
 	void RigidBodyComponent::update() {
 		if (!body) {
 			body = owner->engine->getSystem<PhysicsSystem>()->createBody(owner->transform.position, owner->transform.angle, data, owner);
+			body->SetGravityScale(data.gravityScale);
+			body->SetLinearDamping(1.0f);
 		}
 
 		owner->transform.position = PhysicsSystem::worldToScreen(body->GetPosition());
@@ -33,10 +36,10 @@ namespace ew {
 		body->SetLinearVelocity(velocity);
 	}
 
-	void RigidBodyComponent::setForce(const Vector2& _force) {
-		body->ApplyForceToCenter(_force, true);
-		//body->SetGravityScale(2.0f); increases gravity
-		//body->SetLinearDamping(15.0f); slows movement
+	void RigidBodyComponent::applyForce(const Vector2& _force) {
+		if (body) {
+			body->ApplyForceToCenter(_force, true);
+		}
 	}
 
 

@@ -3,6 +3,7 @@
 #include "Math/Transform.h"
 #include "Engine.h"
 #include <bitset>
+#include <list>
 
 namespace ew {
 	class Component;
@@ -45,6 +46,7 @@ namespace ew {
 	public:
 		Transform transform;
 		Engine* engine{ nullptr };
+		class Scene* scene{ nullptr };
 
 		std::string name;
 		std::string tag;

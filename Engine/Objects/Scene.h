@@ -26,8 +26,9 @@ namespace ew {
 		void removeGameObject(GameObject* gameObject);
 		void removeAllGameObjects();
 
-	protected:
 		Engine* engine{ nullptr };
+
+	protected:
 		std::list<GameObject*> gameObjects;
 	};
 }

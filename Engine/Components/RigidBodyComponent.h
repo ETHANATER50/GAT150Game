@@ -13,7 +13,7 @@ namespace ew {
 
 		virtual void update() override;
 
-		virtual void setForce(const Vector2& _force)override;
+		virtual void applyForce(const Vector2& _force)override;
 
 	protected:
 		b2Body* body{ nullptr };

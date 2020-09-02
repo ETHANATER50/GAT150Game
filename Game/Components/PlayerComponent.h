@@ -11,5 +11,7 @@ namespace ew {
 
 		virtual void update() override;
 
+		void onCollisionEnter(const Event& event);
+		void onCollisionExit(const Event& event);
 	};
 }

@@ -2,15 +2,23 @@
 #include "Graphics/Texture.h"
 #include "Objects/GameObject.h"
 #include "Components/PlayerComponent.h"
+#include "Components/EnemyComponent.h"
 #include "Objects/ObjectFactory.h"
 #include "Objects/Scene.h"
 #include "Core/Json.h"
+#include "Core/EventManager.h"
 #include "TileMap.h"
 
 
 ew::Engine engine;
 ew::GameObject player;
 ew::Scene scene;
+
+void onPlayerDeath(const ew::Event& event) {
+	int* score = static_cast<int*>(event.data);
+
+	std::cout << "Player Dead: " << *score << std::endl;
+}
 
 int main(int, char**) {
 	
@@ -19,6 +27,10 @@ int main(int, char**) {
 
 	ew::ObjectFactory::instance().initialize();
 	ew::ObjectFactory::instance().Register("PlayerComponent", new ew::Creator<ew::PlayerComponent, ew::Object>);
+	ew::ObjectFactory::instance().Register("EnemyComponent", new ew::Creator<ew::EnemyComponent, ew::Object>);
+
+	ew::EventManager::instance().subscribe("PlayerDead", &onPlayerDeath);
+
 
 	ew::GameObject* player = ew::ObjectFactory::instance().Create<ew::GameObject>("GameObject");
 

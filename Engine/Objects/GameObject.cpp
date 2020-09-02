@@ -3,6 +3,7 @@
 #include "Components/Component.h"
 #include "Components/RenderComponent.h"
 #include "ObjectFactory.h"
+#include "Scene.h"
 
 namespace ew {
 	GameObject::GameObject(const GameObject& other) {
@@ -12,6 +13,7 @@ namespace ew {
 		lifetime = other.lifetime;
 		transform = other.transform;
 		engine = other.engine;
+		scene = other.scene;
 
 		for (auto component : other.components) {
 			Component* clone = static_cast<Component*>(component->clone());
@@ -22,7 +24,8 @@ namespace ew {
 	}
 
 	void GameObject::create(void* data) {
-		engine = static_cast<Engine*>(data);
+		scene = static_cast<Scene*>(data);
+		engine = scene->engine;
 	}
 
 	void GameObject::destroy() {
@@ -90,10 +93,25 @@ namespace ew {
 
 	void GameObject::beginContact(GameObject* other) {
 		contacts.push_back(other);
+
+		Event event;
+		event.sender = other;
+		event.reciever = this;
+		event.type = "CollisionEnter";
+
+		EventManager::instance().notify(event);
 	}
 
 	void GameObject::endContact(GameObject* other) {
 		contacts.remove(other);
+
+
+		Event event;
+		event.sender = other;
+		event.reciever = this;
+		event.type = "CollisionExit";
+
+		EventManager::instance().notify(event);
 	}
 
 	std::vector<GameObject*> GameObject::getContactsWithTag(const std::string& tag) {

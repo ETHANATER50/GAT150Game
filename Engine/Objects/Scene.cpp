@@ -37,7 +37,7 @@ namespace ew {
 				ew::GameObject* gameObject = ObjectFactory::instance().Create<GameObject>(typeName);
 
 				if (gameObject) {
-					gameObject->create(engine);
+					gameObject->create(this);
 					gameObject->read(objectValue);
 					addGameObject(gameObject);
 				}
@@ -54,7 +54,7 @@ namespace ew {
 				ew::GameObject* gameObject = ObjectFactory::instance().Create<GameObject>(typeName);
 
 				if (gameObject) {
-					gameObject->create(engine);
+					gameObject->create(this);
 					gameObject->read(objectValue);
 
 					ObjectFactory::instance().Register(gameObject->name, new Prototype<Object>(gameObject));

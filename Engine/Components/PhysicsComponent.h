@@ -12,7 +12,7 @@ namespace ew {
 
 		virtual void update() override;
 
-		virtual void setForce(const Vector2& _force) { force = _force; }
+		virtual void applyForce(const Vector2& _force) { force = _force; }
 		virtual Vector2 getVelocity() { return velocity; }
 
 	protected:

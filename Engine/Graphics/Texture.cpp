@@ -23,7 +23,7 @@ namespace ew {
 		SDL_DestroyTexture(texture);
 	}
 
-	void Texture::draw(const Vector2& position, float angle, const Vector2& scale, const Vector2& origin) {
+	void Texture::draw(const Vector2& position, float angle, const Vector2& scale, const Vector2& origin, bool flip) {
 		Vector2 size = getSize();
 		size *= scale;
 		Vector2 newPos = position - size * origin;
@@ -33,9 +33,10 @@ namespace ew {
 		rect.y = static_cast<int>(newPos.y);
 		rect.w = static_cast<int>(size.x);
 		rect.h = static_cast<int>(size.y);
-		SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
+
+		SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle, NULL, (flip) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
 	}
-	void Texture::draw(const SDL_Rect& source, const Vector2& position, float angle, const Vector2& scale, const Vector2& origin) {
+	void Texture::draw(const SDL_Rect& source, const Vector2& position, float angle, const Vector2& scale, const Vector2& origin, bool flip) {
 		Vector2 size = { source.w, source.h };
 		size *= scale;
 		Vector2 newPos = position - size * origin;
@@ -45,7 +46,7 @@ namespace ew {
 		rect.y = static_cast<int>(newPos.y);
 		rect.w = static_cast<int>(size.x);
 		rect.h = static_cast<int>(size.y);
-		SDL_RenderCopyEx(renderer, texture, &source, &rect, angle, NULL, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(renderer, texture, &source, &rect, angle, NULL, (flip) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
 	}
 	Vector2 Texture::getSize() {
 		SDL_Point point;

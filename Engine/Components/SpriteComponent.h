@@ -16,11 +16,12 @@ namespace ew {
 		virtual void update() override;
 		virtual void draw() override;
 
+		void flip(bool _flip = true) { fliped = _flip; }
 
 	protected:
 		SDL_Rect rect;
 		std::string textureName;
 		Vector2 origin;
-
+		bool fliped{ false };
 	};
 }

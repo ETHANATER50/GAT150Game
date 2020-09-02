@@ -28,9 +28,11 @@ namespace ew {
 		if (owner->engine->getSystem<ew::InputSystem>()->getButtonState(SDL_SCANCODE_D) == ew::InputSystem::ButtonState::HELD) {
 			force.x = 80;
 		}
+		PhysicsComponent* component = owner->getComponent<PhysicsComponent>();
+		std::cout << "Vertical velocity = " << component->getVelocity().y << std::endl;
 
-		if (onGround && owner->engine->getSystem<ew::InputSystem>()->getButtonState(SDL_SCANCODE_SPACE) == ew::InputSystem::ButtonState::PRESSED) {
-			force.y = -2500;
+		if (component->getVelocity().y <= 0.0001f && component->getVelocity().y >= -0.0001f && owner->engine->getSystem<ew::InputSystem>()->getButtonState(SDL_SCANCODE_SPACE) == ew::InputSystem::ButtonState::PRESSED) {
+			force.y = -2200;
 			AudioComponent* audioComponent = owner->getComponent<AudioComponent>(); 
 			if (audioComponent) { 
 				audioComponent->setSoundName("sounds/jump.wav");
@@ -38,7 +40,6 @@ namespace ew {
 			}
 		}
 
-		PhysicsComponent* component = owner->getComponent<PhysicsComponent>();
 		if (component) {
 			Vector2 velocity = component->getVelocity();
 

@@ -33,7 +33,7 @@ namespace ew {
 			force.y = -2500;
 			AudioComponent* audioComponent = owner->getComponent<AudioComponent>(); 
 			if (audioComponent) { 
-				audioComponent->setSoundName("jump.wav");
+				audioComponent->setSoundName("sounds/jump.wav");
 				audioComponent->play();
 			}
 		}
@@ -75,7 +75,7 @@ namespace ew {
 		}
 		if (gameObject->tag == "Coin") {
 			AudioComponent* audio = owner->getComponent<AudioComponent>();
-			audio->setSoundName("coin.wav");
+			audio->setSoundName("sounds/coin.wav");
 			audio->play();
 
 			gameObject->flags[GameObject::eFlags::DESTROY] = true;
